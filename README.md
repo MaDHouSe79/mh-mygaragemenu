@@ -55,9 +55,3 @@ Config.MenuItems = {
 ## 🙈 Youtube & Discord
 - [Youtube](https://www.youtube.com/c/MaDHouSe79)
 - [Discord](https://discord.gg/cEMSeE9dgS)
-
-## 🐞 Any bugs, let my know.
-
-## 🙈 Youtube & Discord
-- [Youtube](https://www.youtube.com/c/MaDHouSe79)
-- [Discord](https://discord.gg/cEMSeE9dgS)
