@@ -62,7 +62,7 @@ local function TakeOutVehicle(data)
             return
         else
             QBCore.Functions.SpawnVehicle(data.vehicle, function(veh)
-                QBCore.Functions.TriggerCallback("qb-mygaragemenu:server:GetVehicleProperties", function(properties)
+                QBCore.Functions.TriggerCallback("mh-mygaragemenu:server:GetVehicleProperties", function(properties)
                     QBCore.Functions.SetVehicleProperties(veh, properties)
                     SetVehicleNumberPlateText(veh, data.plate)
                     SetEntityHeading(veh, heading)
@@ -75,8 +75,8 @@ local function TakeOutVehicle(data)
                     DoVehicleDamage(veh, data.body, data.engine)
                     SetFuel(veh, data.fuel)
                     --
-                    TriggerServerEvent(Config.KeyScriptTrigger, data.plate)
-                    TriggerServerEvent('qb-mygaragemenu:server:GetVehicleOutGarage', data.plate)
+                    TriggerServerEvent("qb-vehiclekeys:server:AcquireVehicleKeys", data.plate)
+                    TriggerServerEvent('mh-mygaragemenu:server:GetVehicleOutGarage', data.plate)
                     if Config.AutoStartVehicle then 
                         SetVehicleEngineOn(veh, true, true) 
                     end
@@ -91,7 +91,7 @@ local function CheckPlayers(vehicle)
     for i = -1, 5,1 do                
         if GetPedInVehicleSeat(vehicle, i) ~= 0 then
             local seat = GetPedInVehicleSeat(vehicle, i)
-            TaskLeaveVehicle(seat, vehicle, 0)
+            TaskLeaveVehicle(seat, vehicle, i)
             SetVehicleDoorsLocked(vehicle)
         end
     end
@@ -115,7 +115,7 @@ local function ParkCar(player, vehicle)
     SetVehicleLights(vehicle, 0)
     TriggerServerEvent("InteractSound_SV:PlayWithinDistance", 5, "lock", 0.3)
     Wait(1000)
-    TriggerServerEvent('qb-mygaragemenu:server:PutVehicleInGarage', plate)
+    TriggerServerEvent('mh-mygaragemenu:server:PutVehicleInGarage', plate)
     QBCore.Functions.DeleteVehicle(vehicle)
 	DeleteVehicle(vehicle)
 end
@@ -127,7 +127,7 @@ local function CreateMenuItem()
     Wait(10)
     MenuItemId = exports['qb-radialmenu']:AddOption({
         id = 'mygarage0001',
-        title = 'My Garage',
+        title = 'Mijn Garage',
         icon = 'warehouse',
         type = 'client',
         event = 'mh-mygaragemenu:client:myVehicles',
@@ -136,9 +136,15 @@ local function CreateMenuItem()
 end
 
 local function AddRadialMyGarageOption()
+    if MenuItemId ~= nil then
+        exports['qb-radialmenu']:RemoveOption(MenuItemId)
+    end
+    Wait(10)
     QBCore.Functions.TriggerCallback("mh-mygaragemenu:server:isAdmin", function(isAdmin)
-        if Config.AdminOnly and isAdmin then
-            CreateMenuItem()
+        if Config.AdminOnly then
+            if isAdmin then
+                CreateMenuItem()
+            end
         else
             CreateMenuItem()
         end
@@ -146,9 +152,12 @@ local function AddRadialMyGarageOption()
 end
 
 AddEventHandler('QBCore:Client:OnPlayerLoaded', function()
-    if resource == GetCurrentResourceName() then
-        AddRadialMyGarageOption()
-    end
+    PlayerData = QBCore.Functions.GetPlayerData()
+    AddRadialMyGarageOption()
+end)
+
+RegisterNetEvent('QBCore:Player:SetPlayerData', function(data)
+    PlayerData = data
 end)
 
 AddEventHandler('onResourceStart', function(resource)
@@ -157,15 +166,9 @@ AddEventHandler('onResourceStart', function(resource)
     end
 end)
 
-
-RegisterKeyMapping(Config.ParkingCommand, Lang:t('command.info'), 'keyboard', Config.ParkingKeybinds) 
-RegisterCommand(Config.ParkingCommand, function()
-    TriggerEvent('qb-mygaragemenu:client:myVehicles')
-end, false)
-
-RegisterNetEvent('qb-mygaragemenu:client:takeOutVehicle', function(data)
+RegisterNetEvent('mh-mygaragemenu:client:takeOutVehicle', function(data)
     if not IsPedInAnyVehicle(PlayerPedId()) then
-        QBCore.Functions.TriggerCallback('qb-mygaragemenu:server:isOwner', function(owned)
+        QBCore.Functions.TriggerCallback('mh-mygaragemenu:server:isOwner', function(owned)
             if owned then
                 TakeOutVehicle(data)
             else
@@ -177,16 +180,17 @@ RegisterNetEvent('qb-mygaragemenu:client:takeOutVehicle', function(data)
     end
 end)
 
-RegisterNetEvent('qb-mygaragemenu:client:parkVehicle', function(data)
+RegisterNetEvent('mh-mygaragemenu:client:parkVehicle', function(data)
     ParkCar(data.player, data.vehicle)
 end)
 
-RegisterNetEvent('qb-mygaragemenu:client:myVehicles', function()
-    QBCore.Functions.TriggerCallback("qb-mygaragemenu:server:getMyVehicles", function(myVehicles)
+RegisterNetEvent('mh-mygaragemenu:client:myVehicles', function()
+    QBCore.Functions.TriggerCallback("mh-mygaragemenu:server:getMyVehicles", function(myVehicles)
         local categoryMenu = {
             {
                 header = Lang:t('menu.garage'),
-                isMenuHeader = true
+                isMenuHeader = true,
+                icon = Config.fontawesome.open_menu,
             }
         }
         if myVehicles ~= nil then
@@ -198,8 +202,9 @@ RegisterNetEvent('qb-mygaragemenu:client:myVehicles', function()
                     categoryMenu[#categoryMenu + 1] = {
                         header = vehicle.vehicle,
                         txt = Lang:t('vehicle.plate', {plate=vehicle.plate})..Lang:t('vehicle.fuel',{fuel=currentFuel})..Lang:t('vehicle.engine',{engine=enginePercent})..Lang:t('vehicle.body',{body=bodyPercent}),
+                        icon = Config.fontawesome.item_menu,
                         params = {
-                            event = 'qb-mygaragemenu:client:takeOutVehicle',
+                            event = 'mh-mygaragemenu:client:takeOutVehicle',
                             args = {
                                 vehicle = vehicle.vehicle,
                                 plate = vehicle.plate,
@@ -215,8 +220,9 @@ RegisterNetEvent('qb-mygaragemenu:client:myVehicles', function()
         if IsPedInAnyVehicle(PlayerPedId()) then
             categoryMenu[#categoryMenu + 1] = {
                 header = Lang:t('menu.parking'),
+                icon = Config.fontawesome.item_menu,
                 params = {
-                    event = 'qb-mygaragemenu:client:parkVehicle',
+                    event = 'mh-mygaragemenu:client:parkVehicle',
                     args = {
                         player = PlayerPedId(),
                         vehicle = GetVehiclePedIsIn(PlayerPedId()),
@@ -226,6 +232,7 @@ RegisterNetEvent('qb-mygaragemenu:client:myVehicles', function()
         end
         categoryMenu[#categoryMenu + 1] = {
             header = Lang:t('menu.close_menu'),
+            icon = Config.fontawesome.close_menu,
             params = {event = ''}
         }
         exports['qb-menu']:openMenu(categoryMenu)
