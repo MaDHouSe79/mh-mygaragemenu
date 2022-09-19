@@ -4,6 +4,7 @@
 ## How to install.
 - Copy the directory `qb-mygaragemenu` to `resources/[qb]/`
 - Press in game `F8` and type `refresh` and then type `ensure qb-mygaragemenu` or restart your server.
+- Press F1 and click on My Garage.
 
 ## QB-MyGarageMenu 
 - Get your vehicle from the garage wherever you are at the time.
