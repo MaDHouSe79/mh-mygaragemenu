@@ -4,6 +4,15 @@
 
 local QBCore = exports['qb-core']:GetCoreObject()
 
+QBCore.Functions.CreateCallback('mh-mygaragemenu:server:isAdmin', function(source, cb)
+    local src = source
+    local isAllowed = false
+    if IsPlayerAceAllowed(src, 'admin') or IsPlayerAceAllowed(src, 'command') then
+        isAllowed = true
+    end
+    cb(isAllowed)
+end)
+
 RegisterNetEvent('qb-mygaragemenu:server:GetVehicleOutGarage', function(plate)
     local src = source
     local Player = QBCore.Functions.GetPlayer(src)
