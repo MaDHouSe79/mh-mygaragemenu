@@ -120,6 +120,44 @@ local function ParkCar(player, vehicle)
 	DeleteVehicle(vehicle)
 end
 
+local function CreateMenuItem()
+    if MenuItemId ~= nil then
+        exports['qb-radialmenu']:RemoveOption(MenuItemId)
+    end
+    Wait(10)
+    MenuItemId = exports['qb-radialmenu']:AddOption({
+        id = 'mygarage0001',
+        title = 'My Garage',
+        icon = 'warehouse',
+        type = 'client',
+        event = 'mh-mygaragemenu:client:myVehicles',
+        shouldClose = true
+    }, MenuItemId)
+end
+
+local function AddRadialMyGarageOption()
+    QBCore.Functions.TriggerCallback("mh-mygaragemenu:server:isAdmin", function(isAdmin)
+        if Config.AdminOnly and isAdmin then
+            CreateMenuItem()
+        else
+            CreateMenuItem()
+        end
+    end)
+end
+
+AddEventHandler('QBCore:Client:OnPlayerLoaded', function()
+    if resource == GetCurrentResourceName() then
+        AddRadialMyGarageOption()
+    end
+end)
+
+AddEventHandler('onResourceStart', function(resource)
+    if resource == GetCurrentResourceName() then
+        AddRadialMyGarageOption()
+    end
+end)
+
+
 RegisterKeyMapping(Config.ParkingCommand, Lang:t('command.info'), 'keyboard', Config.ParkingKeybinds) 
 RegisterCommand(Config.ParkingCommand, function()
     TriggerEvent('qb-mygaragemenu:client:myVehicles')
