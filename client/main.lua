@@ -127,7 +127,7 @@ local function CreateMenuItem()
     Wait(10)
     MenuItemId = exports['qb-radialmenu']:AddOption({
         id = 'mygarage0001',
-        title = 'Mijn Garage',
+        title = Lang:t('menu.garage'),
         icon = 'warehouse',
         type = 'client',
         event = 'mh-mygaragemenu:client:myVehicles',
