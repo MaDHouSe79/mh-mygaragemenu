@@ -14,3 +14,7 @@ Config.fontawesome = {
     item_menu  = "fa-solid fa-angle-right",
     open_menu  = "fa-solid fa-circle-info",
 }
+
+Config.Authorized = {
+    "CYC60989",
+}
