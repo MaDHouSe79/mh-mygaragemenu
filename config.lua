@@ -1,5 +1,7 @@
 Config                  = {}
 
+Config.CheckForUpdates  = true
+
 Config.KeyScriptTrigger = "qb-vehiclekeys:server:AcquireVehicleKeys"
 
 Config.ParkingCommand   = "park-menu"
