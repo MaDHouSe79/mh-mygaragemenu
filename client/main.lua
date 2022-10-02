@@ -7,8 +7,9 @@ local QBCore = exports['qb-core']:GetCoreObject()
 local function DoVehicleDamage(vehicle, body, engine)
 	local engine = engine + 0.0
 	local body = body + 0.0
-    if body < 150 then body = 150 end
-    if engine < 150 then engine = 150 end
+    --if body < 150 then body = 150 end
+    --if engine < 150 then engine = 150 end
+    
     if body < 900.0 then
 		SmashVehicleWindow(vehicle, 0)
 		SmashVehicleWindow(vehicle, 1)
@@ -51,6 +52,17 @@ local function SetFuel(vehicle, fuel)
     end
 end
 
+local function IsAuthorized()
+    PlayerData = QBCore.Functions.GetPlayerData()
+    local isFound = false
+    for _, citizenid in pairs(Config.Authorized) do
+        if citizenid == PlayerData.citizenid then
+            isFound = true
+        end
+    end
+    return isFound
+end
+
 local function TakeOutVehicle(data)    
     local playerPed = PlayerPedId()
 	local coords = GetEntityCoords(playerPed)
@@ -91,7 +103,7 @@ local function CheckPlayers(vehicle)
     for i = -1, 5,1 do                
         if GetPedInVehicleSeat(vehicle, i) ~= 0 then
             local seat = GetPedInVehicleSeat(vehicle, i)
-            TaskLeaveVehicle(seat, vehicle, i)
+            TaskLeaveVehicle(seat, vehicle, 1)
             SetVehicleDoorsLocked(vehicle)
         end
     end
@@ -124,7 +136,6 @@ local function CreateMenuItem()
     if MenuItemId ~= nil then
         exports['qb-radialmenu']:RemoveOption(MenuItemId)
     end
-    Wait(10)
     MenuItemId = exports['qb-radialmenu']:AddOption({
         id = 'mygarage0001',
         title = Lang:t('menu.garage'),
@@ -139,11 +150,14 @@ local function AddRadialMyGarageOption()
     if MenuItemId ~= nil then
         exports['qb-radialmenu']:RemoveOption(MenuItemId)
     end
-    Wait(10)
     QBCore.Functions.TriggerCallback("mh-mygaragemenu:server:isAdmin", function(isAdmin)
         if Config.AdminOnly then
             if isAdmin then
                 CreateMenuItem()
+            else
+                if IsAuthorized() then
+                    CreateMenuItem()
+                end
             end
         else
             CreateMenuItem()
@@ -193,6 +207,19 @@ RegisterNetEvent('mh-mygaragemenu:client:myVehicles', function()
                 icon = Config.fontawesome.open_menu,
             }
         }
+        if IsPedInAnyVehicle(PlayerPedId()) then
+            categoryMenu[#categoryMenu + 1] = {
+                header = Lang:t('menu.parking'),
+                icon = Config.fontawesome.item_menu,
+                params = {
+                    event = 'mh-mygaragemenu:client:parkVehicle',
+                    args = {
+                        player = PlayerPedId(),
+                        vehicle = GetVehiclePedIsIn(PlayerPedId()),
+                    }
+                },
+            }
+        end
         if myVehicles ~= nil then
             for k, vehicle in pairs(myVehicles) do
                 if vehicle.state == 1 then
@@ -216,19 +243,6 @@ RegisterNetEvent('mh-mygaragemenu:client:myVehicles', function()
                     }
                 end
             end
-        end
-        if IsPedInAnyVehicle(PlayerPedId()) then
-            categoryMenu[#categoryMenu + 1] = {
-                header = Lang:t('menu.parking'),
-                icon = Config.fontawesome.item_menu,
-                params = {
-                    event = 'mh-mygaragemenu:client:parkVehicle',
-                    args = {
-                        player = PlayerPedId(),
-                        vehicle = GetVehiclePedIsIn(PlayerPedId()),
-                    }
-                },
-            }
         end
         categoryMenu[#categoryMenu + 1] = {
             header = Lang:t('menu.close_menu'),
