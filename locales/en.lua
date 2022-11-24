@@ -15,9 +15,6 @@ local Translations = {
         ['fuel']  = "Fuel: %{fuel}%<br>",
         ['engine'] = "Engine: %{engine}%<br>",
         ['body']  = "Body: %{body}%<br>",
-    },
-    command = {
-        ['info'] = "Park or get your vehicle",
     }
 }
 
