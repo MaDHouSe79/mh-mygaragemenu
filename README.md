@@ -3,7 +3,7 @@
 
 
 ## NOTE for Admin or public access
-- in the `mh-mygaragemenu/server/main.lua` at line 7
+- in the `mh-mygaragemenu/server/main.lua` at line 6
 - you can set admin only or public access.
 - if false, everybody can use it.
 
