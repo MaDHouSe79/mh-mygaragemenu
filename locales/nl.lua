@@ -5,11 +5,11 @@ local Translations = {
         ['is_in_vehicle'] = "Je zit al in een voertuig",
     },
     menu = {
-        ['header_cotegories'] = "Voertuigcategorieën",
         ['garage'] = "Mijn Garage",
         ['parking'] = "Parkeren",
         ['close_menu'] = "Sluit menu",
         ['radialmenu'] = "Mijn Voertuigen",
+        ['header_cotegories'] = "Voertuigcategorieën",
     },
     vehicle = {
         ['plate'] = "Kenteken: %{plate}<br>",
