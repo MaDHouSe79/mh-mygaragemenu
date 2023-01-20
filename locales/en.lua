@@ -9,7 +9,9 @@ local Translations = {
         ['parking'] = "Parking",
         ['close_menu'] = "Close menu",
         ['radialmenu'] = "My Vehicles",
+        ['header_txt'] = "Category %{name}",
         ['header_cotegories'] = "Vehicle categories",
+        ['back_menu'] = "Back",
     },
     vehicle = {
         ['plate'] = "Plate: %{plate}<br>",
