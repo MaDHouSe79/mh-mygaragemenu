@@ -9,7 +9,9 @@ local Translations = {
         ['parking'] = "Parkeren",
         ['close_menu'] = "Sluit menu",
         ['radialmenu'] = "Mijn Voertuigen",
+        ['header_txt'] = "Categorie %{name}",
         ['header_cotegories'] = "Voertuigcategorieën",
+        ['back_menu'] = "Terug",
     },
     vehicle = {
         ['plate'] = "Kenteken: %{plate}<br>",
