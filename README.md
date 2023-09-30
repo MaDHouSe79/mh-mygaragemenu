@@ -17,8 +17,5 @@
 - Press in game `F8` and type `refresh` and then type `ensure mh-mygaragemenu` 
 - Or just restart your server.
 
-## 🐞 Any bugs, let my know.
-
-## 🙈 Youtube & Discord
-- [Youtube](https://www.youtube.com/@MaDHouSe79)
-- [Discord](https://discord.gg/cEMSeE9dgS)
+# 🙈 Youtube
+- [Youtube](https://www.youtube.com/c/MaDHouSe79)
