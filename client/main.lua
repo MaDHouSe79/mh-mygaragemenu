@@ -1,51 +1,50 @@
---[[ ===================================================== ]]--
---[[          QBCore My Garage Script by MaDHouSe          ]]--
---[[ ===================================================== ]]--
-
+--[[ ===================================================== ]] --
+--[[            MH My Garage Script by MaDHouSe            ]] --
+--[[ ===================================================== ]] --
 local QBCore = exports['qb-core']:GetCoreObject()
 local MenuItemId = nil
 
 local function DoVehicleDamage(vehicle, body, engine)
-	local engine = engine + 0.0
-	local body = body + 0.0
+    local engine = engine + 0.0
+    local body = body + 0.0
     if body < 900.0 then
-		SmashVehicleWindow(vehicle, 0)
-		SmashVehicleWindow(vehicle, 1)
-		SmashVehicleWindow(vehicle, 2)
-		SmashVehicleWindow(vehicle, 3)
-		SmashVehicleWindow(vehicle, 4)
-		SmashVehicleWindow(vehicle, 5)
-		SmashVehicleWindow(vehicle, 6)
-		SmashVehicleWindow(vehicle, 7)
-	end
-	if body < 800.0 then
-		SetVehicleDoorBroken(vehicle, 0, true)
-		SetVehicleDoorBroken(vehicle, 1, true)
-		SetVehicleDoorBroken(vehicle, 2, true)
-		SetVehicleDoorBroken(vehicle, 3, true)
-		SetVehicleDoorBroken(vehicle, 4, true)
-		SetVehicleDoorBroken(vehicle, 5, true)
-		SetVehicleDoorBroken(vehicle, 6, true)
-	end
-	if engine < 700.0 then
-		SetVehicleTyreBurst(vehicle, 1, false, 990.0)
-		SetVehicleTyreBurst(vehicle, 2, false, 990.0)
-		SetVehicleTyreBurst(vehicle, 3, false, 990.0)
-		SetVehicleTyreBurst(vehicle, 4, false, 990.0)
-	end
-	if engine < 500.0 then
-		SetVehicleTyreBurst(vehicle, 0, false, 990.0)
-		SetVehicleTyreBurst(vehicle, 5, false, 990.0)
-		SetVehicleTyreBurst(vehicle, 6, false, 990.0)
-		SetVehicleTyreBurst(vehicle, 7, false, 990.0)
-	end
+        SmashVehicleWindow(vehicle, 0)
+        SmashVehicleWindow(vehicle, 1)
+        SmashVehicleWindow(vehicle, 2)
+        SmashVehicleWindow(vehicle, 3)
+        SmashVehicleWindow(vehicle, 4)
+        SmashVehicleWindow(vehicle, 5)
+        SmashVehicleWindow(vehicle, 6)
+        SmashVehicleWindow(vehicle, 7)
+    end
+    if body < 800.0 then
+        SetVehicleDoorBroken(vehicle, 0, true)
+        SetVehicleDoorBroken(vehicle, 1, true)
+        SetVehicleDoorBroken(vehicle, 2, true)
+        SetVehicleDoorBroken(vehicle, 3, true)
+        SetVehicleDoorBroken(vehicle, 4, true)
+        SetVehicleDoorBroken(vehicle, 5, true)
+        SetVehicleDoorBroken(vehicle, 6, true)
+    end
+    if engine < 700.0 then
+        SetVehicleTyreBurst(vehicle, 1, false, 990.0)
+        SetVehicleTyreBurst(vehicle, 2, false, 990.0)
+        SetVehicleTyreBurst(vehicle, 3, false, 990.0)
+        SetVehicleTyreBurst(vehicle, 4, false, 990.0)
+    end
+    if engine < 500.0 then
+        SetVehicleTyreBurst(vehicle, 0, false, 990.0)
+        SetVehicleTyreBurst(vehicle, 5, false, 990.0)
+        SetVehicleTyreBurst(vehicle, 6, false, 990.0)
+        SetVehicleTyreBurst(vehicle, 7, false, 990.0)
+    end
     SetVehicleEngineHealth(vehicle, engine)
     SetVehicleBodyHealth(vehicle, body)
 end
 
-local function TakeOutVehicle(data)    
+local function TakeOutVehicle(data)
     local playerPed = PlayerPedId()
-	local coords = GetEntityCoords(playerPed)
+    local coords = GetEntityCoords(playerPed)
     local heading = GetEntityHeading(playerPed)
     local tmpLocation = vector3(coords.x, coords.y, coords.z)
     if tmpLocation then
@@ -76,7 +75,7 @@ local function TakeOutVehicle(data)
 end
 
 local function CheckPlayers(vehicle)
-    for i = -1, 7,1 do                
+    for i = -1, 7, 1 do
         TaskLeaveVehicle(GetPedInVehicleSeat(vehicle, i), vehicle, 1)
         SetVehicleDoorsLocked(vehicle, 2)
     end
@@ -102,7 +101,7 @@ local function ParkCar(player, vehicle)
     Wait(1000)
     TriggerServerEvent('mh-mygaragemenu:server:PutVehicleInGarage', plate)
     QBCore.Functions.DeleteVehicle(vehicle)
-	DeleteVehicle(vehicle)
+    DeleteVehicle(vehicle)
 end
 
 local function IsValueExists(index, val)
@@ -178,14 +177,13 @@ RegisterNetEvent('mh-mygaragemenu:client:takeOutVehicle', function(data)
     end
 end)
 
+local current_cat = nil
 RegisterNetEvent('mh-mygaragemenu:client:vehCategories', function(coords)
     QBCore.Functions.TriggerCallback("mh-mygaragemenu:server:getMyVehicles", function(myVehicles)
-        local categoryMenu = {
-            {
-                header = Lang:t('menu.header_cotegories'),
-                isMenuHeader = true
-            }
-        }
+        local categoryMenu = {{
+            header = Lang:t('menu.header_cotegories'),
+            isMenuHeader = true
+        }}
         if IsPedInAnyVehicle(PlayerPedId()) then
             categoryMenu[#categoryMenu + 1] = {
                 header = Lang:t('menu.parking'),
@@ -194,23 +192,27 @@ RegisterNetEvent('mh-mygaragemenu:client:vehCategories', function(coords)
                     event = 'mh-mygaragemenu:client:parkVehicle',
                     args = {
                         player = PlayerPedId(),
-                        vehicle = GetVehiclePedIsIn(PlayerPedId()),
+                        vehicle = GetVehiclePedIsIn(PlayerPedId())
                     }
-                },
+                }
             }
         end
         if myVehicles ~= nil then
             for category, label in pairs(Config.Categories) do
                 for _, data in pairs(myVehicles) do
                     if QBCore.Shared.Vehicles[data.vehicle:lower()] then
-                        if QBCore.Shared.Vehicles[data.vehicle:lower()]["category"] == category then
+                        if QBCore.Shared.Vehicles[data.vehicle:lower()]["category"] == category and category ~=
+                            current_cat then
+                            current_cat = category
                             if not IsValueExists(categoryMenu, category) then
                                 categoryMenu[#categoryMenu + 1] = {
                                     header = label,
                                     params = {
                                         event = 'mh-mygaragemenu:client:openVehCats',
-                                        args = {cateName = category:lower() }
-                                    },
+                                        args = {
+                                            cateName = category:lower()
+                                        }
+                                    }
                                 }
                             end
                         end
@@ -230,16 +232,18 @@ end)
 
 RegisterNetEvent('mh-mygaragemenu:client:openVehCats', function(rs)
     QBCore.Functions.TriggerCallback("mh-mygaragemenu:server:getMyVehicles", function(myVehicles)
-        local categoryMenu = {
-            {
-                header = Lang:t('menu.header_txt',{name = rs.cateName:upper()}),
-                isMenuHeader = true
-            }
-        }
+        local categoryMenu = {{
+            header = Lang:t('menu.header_txt', {
+                name = rs.cateName:upper()
+            }),
+            isMenuHeader = true
+        }}
         categoryMenu[#categoryMenu + 1] = {
             header = Lang:t('menu.back_menu'),
             icon = "fa-solid fa-angle-left",
-            params = {event = 'mh-mygaragemenu:client:vehCategories'}
+            params = {
+                event = 'mh-mygaragemenu:client:vehCategories'
+            }
         }
         if myVehicles ~= nil then
             for _, data in pairs(myVehicles) do
@@ -251,7 +255,15 @@ RegisterNetEvent('mh-mygaragemenu:client:openVehCats', function(rs)
                         categoryMenu[#categoryMenu + 1] = {
                             header = data.vehicle:lower(),
                             icon = "fa-solid fa-angle-right",
-                            txt = Lang:t('vehicle.plate', {plate=data.plate})..Lang:t('vehicle.fuel',{fuel=currentFuel})..Lang:t('vehicle.engine',{engine=enginePercent})..Lang:t('vehicle.body',{body=bodyPercent}),
+                            txt = Lang:t('vehicle.plate', {
+                                plate = data.plate
+                            }) .. Lang:t('vehicle.fuel', {
+                                fuel = currentFuel
+                            }) .. Lang:t('vehicle.engine', {
+                                engine = enginePercent
+                            }) .. Lang:t('vehicle.body', {
+                                body = bodyPercent
+                            }),
                             params = {
                                 event = 'mh-mygaragemenu:client:takeOutVehicle',
                                 args = {
@@ -259,9 +271,9 @@ RegisterNetEvent('mh-mygaragemenu:client:openVehCats', function(rs)
                                     plate = data.plate,
                                     fuel = data.fuel,
                                     body = data.body,
-                                    engine = data.engine,
+                                    engine = data.engine
                                 }
-                            },
+                            }
                         }
                     end
                 end
@@ -269,7 +281,9 @@ RegisterNetEvent('mh-mygaragemenu:client:openVehCats', function(rs)
         end
         categoryMenu[#categoryMenu + 1] = {
             header = Lang:t('menu.close_menu'),
-            params = {event = ''}
+            params = {
+                event = ''
+            }
         }
         exports['qb-menu']:openMenu(categoryMenu)
     end)
