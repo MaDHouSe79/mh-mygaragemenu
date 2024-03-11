@@ -2,7 +2,7 @@
 --[[            MH My Garage Script by MaDHouSe            ]] --
 --[[ ===================================================== ]] --
 local QBCore = exports['qb-core']:GetCoreObject()
-local MenuItemId = nil
+local MenuItemId, current_cat = nil, nil
 
 local function DoVehicleDamage(vehicle, body, engine)
     local engine = engine + 0.0
@@ -178,7 +178,6 @@ RegisterNetEvent('mh-mygaragemenu:client:takeOutVehicle', function(data)
     end
 end)
 
-local current_cat = nil
 RegisterNetEvent('mh-mygaragemenu:client:vehCategories', function(coords)
     QBCore.Functions.TriggerCallback("mh-mygaragemenu:server:getMyVehicles", function(myVehicles)
         local categoryMenu = {{
