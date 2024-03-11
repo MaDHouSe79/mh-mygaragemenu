@@ -125,6 +125,7 @@ end
 RegisterNetEvent('qb-radialmenu:client:onRadialmenuOpen', function()
     QBCore.Functions.TriggerCallback("mh-mygaragemenu:server:isAllowed", function(isAllowed)
         if isAllowed then
+            current_cat = nil
             if MenuItemId ~= nil then
                 exports['qb-radialmenu']:RemoveOption(MenuItemId)
                 MenuItemId = nil
