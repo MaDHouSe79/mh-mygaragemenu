@@ -278,6 +278,7 @@ RegisterNetEvent('mh-mygaragemenu:client:openVehCats', function(rs)
                     end
                 end
             end
+            current_cat = nil
         end
         categoryMenu[#categoryMenu + 1] = {
             header = Lang:t('menu.close_menu'),
