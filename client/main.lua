@@ -104,24 +104,6 @@ local function ParkCar(player, vehicle)
     DeleteVehicle(vehicle)
 end
 
-local function IsValueExists(index, val)
-    if type(val) == "table" then
-        for _, value in ipairs(index) do
-            if IsValueExists(val, value) then
-                return true
-            end
-        end
-        return false
-    else
-        for _, value in ipairs(index) do
-            if value == val then
-                return true
-            end
-        end
-    end
-    return false
-end
-
 RegisterNetEvent('qb-radialmenu:client:onRadialmenuOpen', function()
     QBCore.Functions.TriggerCallback("mh-mygaragemenu:server:isAllowed", function(isAllowed)
         if isAllowed then
@@ -180,10 +162,12 @@ end)
 
 RegisterNetEvent('mh-mygaragemenu:client:vehCategories', function(coords)
     QBCore.Functions.TriggerCallback("mh-mygaragemenu:server:getMyVehicles", function(myVehicles)
-        local categoryMenu = {{
-            header = Lang:t('menu.header_cotegories'),
-            isMenuHeader = true
-        }}
+        local categoryMenu = {
+            {
+                header = Lang:t('menu.header_cotegories'),
+                isMenuHeader = true
+            }
+        }
         if IsPedInAnyVehicle(PlayerPedId()) then
             categoryMenu[#categoryMenu + 1] = {
                 header = Lang:t('menu.parking'),
@@ -192,28 +176,28 @@ RegisterNetEvent('mh-mygaragemenu:client:vehCategories', function(coords)
                     event = 'mh-mygaragemenu:client:parkVehicle',
                     args = {
                         player = PlayerPedId(),
-                        vehicle = GetVehiclePedIsIn(PlayerPedId())
+                        vehicle = GetVehiclePedIsIn(PlayerPedId()),
                     }
-                }
+                },
             }
         end
         if myVehicles ~= nil then
+            local oldCat = nil
             for category, label in pairs(Config.Categories) do
                 for _, data in pairs(myVehicles) do
-                    if QBCore.Shared.Vehicles[data.vehicle:lower()] then
-                        if QBCore.Shared.Vehicles[data.vehicle:lower()]["category"] == category and category ~=
-                            current_cat then
-                            current_cat = category
-                            if not IsValueExists(categoryMenu, category) then
-                                categoryMenu[#categoryMenu + 1] = {
-                                    header = label,
-                                    params = {
-                                        event = 'mh-mygaragemenu:client:openVehCats',
-                                        args = {
-                                            cateName = category:lower()
-                                        }
+                    if data.state ~= 0 or data.state ~= 3 then
+                        if QBCore.Shared.Vehicles[data.vehicle:lower()] then
+                            if QBCore.Shared.Vehicles[data.vehicle:lower()]["category"] == category then
+                                if oldCat ~= category then
+                                    oldCat = category
+                                    categoryMenu[#categoryMenu + 1] = {
+                                        header = label,
+                                        params = {
+                                            event = 'mh-mygaragemenu:client:openVehCats',
+                                            args = {cateName = category:lower() }
+                                        },
                                     }
-                                }
+                                end
                             end
                         end
                     end
