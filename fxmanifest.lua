@@ -2,7 +2,7 @@ fx_version 'cerulean'
 game 'gta5'
 
 author 'MaDHouSe'
-description 'QB My Garage Menu'
+description 'MH My Garage Menu'
 version '1.0.0'
 
 shared_scripts {
