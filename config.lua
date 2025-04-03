@@ -14,5 +14,7 @@ Config.Categories = {
     ['super']       = 'Super',
     ['vans']        = 'Vans',
     ['planes']      = 'Planes',
+    ['commercial']  = 'Commercial',
+    ['utility']     = 'Utility',
     ['helicopters'] = 'Helicopters',
 }
