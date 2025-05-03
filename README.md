@@ -1,21 +1,9 @@
-## MH-MyGarageMenu as a category menu
-- Get your vehicle from the garage wherever you are at the time.
+<p align="center">
+    <img width="140" src="https://icons.iconarchive.com/icons/iconarchive/red-orb-alphabet/128/Letter-M-icon.png" />  
+    <h1 align="center">Hi 👋, I'm MaDHouSe</h1>
+    <h3 align="center">A passionate allround developer </h3>    
+</p>
 
-
-## NOTE for Admin or public access
-- in the `mh-mygaragemenu/server/main.lua` at line 6
-- you can set admin only or public access.
-- if false, everybody can use it.
-
-
-## Vehicle Menu Category
-- you can add more in `Config.Categories`
-
-## How to install.
-- Create a new folder inside the folder `resources` named `[mh]`.
-- Copy the directory `mh-mygaragemenu` to `resources/[mh]/`
-- Press in game `F8` and type `refresh` and then type `ensure mh-mygaragemenu` 
-- Or just restart your server.
-
-# 🙈 Youtube
-- [Youtube](https://www.youtube.com/c/MaDHouSe79)
+# MH My Garage Menu
+- Download: https://github.com/MH-Scripts
+- Youtube: https://www.youtube.com/@MaDHouSe79
