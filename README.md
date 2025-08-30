@@ -4,6 +4,44 @@
     <h3 align="center">A passionate allround developer </h3>    
 </p>
 
-# MH My Garage Menu
-- Download: https://github.com/MH-Scripts
-- Youtube: https://www.youtube.com/@MaDHouSe79
+<p align="center">
+  <a href="https://github.com/MaDHouSe79/mh-mygaragemenu/issues">
+    <img src="https://img.shields.io/github/issues/MaDHouSe79/mh-mygaragemenu"/> 
+  </a>
+  <a href="https://github.com/MaDHouSe79/mh-mygaragemenu/watchers">
+    <img src="https://img.shields.io/github/watchers/MaDHouSe79/mh-mygaragemenu"/> 
+  </a> 
+  <a href="https://github.com/MaDHouSe79/mh-mygaragemenu/network/members">
+    <img src="https://img.shields.io/github/forks/MaDHouSe79/mh-mygaragemenu"/> 
+  </a>  
+  <a href="https://github.com/MaDHouSe79/mh-mygaragemenu/stargazers">
+    <img src="https://img.shields.io/github/stars/MaDHouSe79/mh-mygaragemenu?color=white"/> 
+  </a>
+  <a href="https://github.com/MaDHouSe79/mh-mygaragemenu/blob/main/LICENSE">
+    <img src="https://img.shields.io/github/license/MaDHouSe79/mh-mygaragemenu?color=black"/> 
+  </a>      
+</p>
+
+# My Youtube Channel
+- [Subscribe](https://www.youtube.com/@MaDHouSe79) 
+
+# MH My Garage Menu as a category menu.
+- Get your vehicle from the garage wherever you are at the time.
+
+# NOTE for Admin or public access
+- in the `mh-mygaragemenu/server/main.lua` at line 6
+- you can set admin only or public access.
+- if false, everybody can use it.
+
+# Vehicle Menu Category
+- you can add more in `Config.Categories`
+
+# How to install.
+- Create a new folder inside the folder `resources` named `[mh]`.
+- Copy the directory `mh-mygaragemenu` to `resources/[mh]/`
+- Press in game `F8` and type `refresh` and then type `ensure mh-mygaragemenu` 
+- Or just restart your server.
+
+# LICENSE
+[GPL LICENSE](./LICENSE)<br />
+&copy; [MaDHouSe79](https://www.youtube.com/@MaDHouSe79)
